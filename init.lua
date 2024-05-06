@@ -195,6 +195,13 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+--  My custom keymaps below (from ethan)
+--  this first one is for telescope file browser idkwhat im doing
+vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>')
+vim.keymap.set('n', '<space>fb', function()
+  require('telescope').extensions.file_browser.file_browser()
+end)
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
