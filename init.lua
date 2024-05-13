@@ -91,17 +91,22 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+--  ethan custom format options
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+
+-- ethan custom shell selection for consisting environment stuff
+vim.opt.shell = '/bin/bash --rcfile /home/ethan/.profile'
+-- vim.opt.shellcmdflag = '-ic'
 
 -- Make line numbers default
 vim.opt.number = true
@@ -194,6 +199,8 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<C-]>', '<C-w><C-w>', { desc = 'Cycle next window' })
+vim.keymap.set('n', '<C-[>', '<C-w><C-h>', { desc = 'Go back a window' })
 
 --  My custom keymaps below (from ethan)
 --  this first one is for telescope file browser idkwhat im doing
@@ -361,6 +368,8 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local fb_actions = require('telescope').extensions.file_browser.actions
+      local actions = require 'telescope.actions'
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -375,12 +384,22 @@ require('lazy').setup({
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          file_browser = {
+            mappings = {
+              ['n'] = {
+                -- mappings for file_browser go here (ethan)
+                ['q'] = actions.smart_add_to_qflist,
+                ['<S-q>'] = actions.smart_send_to_qflist,
+              },
+            },
+          },
         },
       }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'file-browser')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -394,6 +413,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      -- ethan added some
+      vim.keymap.set('n', '<leader>fq', builtin.quickfix, { desc = 'Opens the [Q]uickfix list' })
+
+      --vim.kepmat.set('n'
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
